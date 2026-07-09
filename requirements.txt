@@ -1,0 +1,20 @@
+# FinDoc RAG - Asililiqlar
+
+# Fayl parsing
+pymupdf>=1.28.0
+openpyxl>=3.1.5
+
+# Gun 4 - RAG
+chromadb>=0.4.0
+sentence-transformers>=2.2.0
+
+# Gun 5 - API
+fastapi>=0.110.0
+uvicorn>=0.29.0
+pydantic>=2.6.0
+openai>=1.30.0
+httpx>=0.27.0
+
+# Test
+pytest>=9.0.0
+anyio>=4.0.0

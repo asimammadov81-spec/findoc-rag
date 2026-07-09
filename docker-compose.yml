@@ -1,0 +1,49 @@
+# ==========================================
+# docker-compose.yml - FinDoc RAG
+#
+# Docker Compose konseptleri:
+#   - services  : işlədilecek container-lər
+#   - build     : Dockerfile-dan image qur
+#   - volumes   : fayl sistemi paylaşımı
+#   - environment: mühit dəyişənləri
+#   - command   : default CMD-i əvəz et
+# ==========================================
+
+version: "3.9"
+
+services:
+
+  # ---- Əsas uygulama ----
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: findoc_rag_app
+    environment:
+      - PYTHONUNBUFFERED=1
+      - APP_ENV=development
+    volumes:
+      # Development rejimi: local fayllar container-e mount olur
+      # Kod deyisende image yeniden qurmaya ehtiyac yoxdur
+      - ./src:/app/src
+      - ./tests:/app/tests
+      - ./main.py:/app/main.py
+    command: python main.py
+
+  # ---- Test runner ----
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: findoc_rag_test
+    environment:
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./src:/app/src
+      - ./tests:/app/tests
+    command: pytest tests/ -v
+    # Test bitmeden app baslamaz
+    profiles:
+      - test
